@@ -77,7 +77,7 @@
                                 ${project.basedir}/src/main/resources/openapi/openapi.yaml
                             </inputSpec>
                             <generatorName>typescript-angular</generatorName>
-                            <output>${project.basedir}</output>
+                            <output>${project.basedir}/target/generated-sources/npm-package</output>
                             <configOptions>
                                 <npmName>food-services-api</npmName>
                                 <npmVersion>0.0.1</npmVersion>
