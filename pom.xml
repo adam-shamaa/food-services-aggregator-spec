@@ -60,8 +60,8 @@
                                 ${project.basedir}/src/main/resources/openapi/openapi.yaml
                             </inputSpec>
                             <generatorName>spring</generatorName>
-                            <apiPackage>com.food-services-backend.codegen</apiPackage>
-                            <modelPackage>com.food-services-backend.codegen.model</modelPackage>
+                            <apiPackage>com.foodservices.apicodegen</apiPackage>
+                            <modelPackage>com.foodservices.apicodegen.model</modelPackage>
                             <configOptions>
                                 <interfaceOnly>true</interfaceOnly>
                             </configOptions>
