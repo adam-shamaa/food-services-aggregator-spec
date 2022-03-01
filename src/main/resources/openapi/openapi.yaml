@@ -32,11 +32,6 @@ paths:
             type: string
           required: true
           description: Temporary restaurant identifier provided in the POST /restaurants response
-        - in: query
-          name: sessionId
-          schema:
-            type: string
-          required: true
       responses:
         '200':
           description: Success!
