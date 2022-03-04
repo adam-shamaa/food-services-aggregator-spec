@@ -16,7 +16,7 @@ paths:
       responses:
         '200':
           description:
-            The session ID and address is returned in cookies named `SESSIONID` and `ADDRESS` respectively. You need to include these cookie in subsequent requests.
+            The address is returned in cookie named `address`. You need to include this cookie in subsequent requests.
           headers:
             Set-Cookie:
               schema:
@@ -24,9 +24,12 @@ paths:
   /restaurants:
     get:
       summary: Return available restaurants from supported delivery providers
-      security:
-        - cookieAuth: []
-        - cookieAddress: []
+      parameters:
+        - in: cookie
+          name: address
+          schema:
+            "$ref": "#/components/schemas/Address"
+          required: true
       responses:
         '200':
           description: Success!
@@ -39,9 +42,6 @@ paths:
   /restaurants/{temporaryRestaurantUUID}:
     get:
       summary: Return aggregated restaurant information
-      security:
-        - cookieAuth: [ ]
-        - cookieAddress: [ ]
       parameters:
         - in: path
           name: temporaryRestaurantUUID
@@ -49,6 +49,11 @@ paths:
             type: string
           required: true
           description: Temporary restaurant identifier provided in the POST /restaurants response
+        - in: cookie
+          name: address
+          schema:
+            "$ref": "#/components/schemas/Address"
+          required: true
       responses:
         '200':
           description: Success!
@@ -191,13 +196,3 @@ components:
       enum:
         - Dollars
         - Cents
-  ############ COOKIE DEFINITIONS ############
-  securitySchemes:
-    cookieSession:
-      type: apiKey
-      in: cookie
-      name: SESSIONID
-    cookieAddress:
-      type: apiKey
-      in: cookie
-      name: ADDRESS
