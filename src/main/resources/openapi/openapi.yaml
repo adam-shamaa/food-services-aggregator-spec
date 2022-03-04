@@ -4,15 +4,29 @@ info:
   description: Server for the food services aggregator application
   version: 1.0.1
 paths:
-  /restaurants:
+  /address:
     post:
-      summary: Return available restaurants from supported delivery providers
+      summary: Set the address that will be used to search for available restaurants
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/Address"
+      responses:
+        '200':
+          description:
+            The session ID and address is returned in cookies named `SESSIONID` and `ADDRESS` respectively. You need to include these cookie in subsequent requests.
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+  /restaurants:
+    get:
+      summary: Return available restaurants from supported delivery providers
+      security:
+        - cookieAuth: []
+        - cookieAddress: []
       responses:
         '200':
           description: Success!
@@ -25,6 +39,9 @@ paths:
   /restaurants/{temporaryRestaurantUUID}:
     get:
       summary: Return aggregated restaurant information
+      security:
+        - cookieAuth: [ ]
+        - cookieAddress: [ ]
       parameters:
         - in: path
           name: temporaryRestaurantUUID
@@ -174,3 +191,13 @@ components:
       enum:
         - Dollars
         - Cents
+  ############ COOKIE DEFINITIONS ############
+  securitySchemes:
+    cookieSession:
+      type: apiKey
+      in: cookie
+      name: SESSIONID
+    cookieAddress:
+      type: apiKey
+      in: cookie
+      name: ADDRESS
