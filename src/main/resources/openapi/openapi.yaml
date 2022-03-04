@@ -28,8 +28,9 @@ paths:
         - in: cookie
           name: address
           schema:
-            "$ref": "#/components/schemas/Address"
+            type: string
           required: true
+          description: "URL encoded address, returned by the POST /address endpoint"
       responses:
         '200':
           description: Success!
@@ -52,8 +53,9 @@ paths:
         - in: cookie
           name: address
           schema:
-            "$ref": "#/components/schemas/Address"
+            type: string
           required: true
+          description: "URL encoded address, returned by the POST /address endpoint"
       responses:
         '200':
           description: Success!
