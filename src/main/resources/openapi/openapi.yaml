@@ -192,7 +192,7 @@ components:
       type: string
       enum:
         - CAD
-        - USED
+        - USD
     CurrencyUnits:
       type: string
       enum:
