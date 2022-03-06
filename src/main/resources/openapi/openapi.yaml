@@ -57,7 +57,7 @@ paths:
           required: true
           description: "URL encoded address, returned by the POST /address endpoint"
         - in: query
-          name: subtotal
+          name: subtotalCents
           schema:
             type: number
           required: true
