@@ -120,10 +120,12 @@ components:
     ServiceProviderMetadata:
       type: object
       properties:
-        name:
+        restaurantName:
           type: string
         redirectUrl:
           type: string
+        serviceProviderName:
+          $ref: "#/components/schemas/ServiceProviderName"
     MenuItem:
       type: object
       properties:
