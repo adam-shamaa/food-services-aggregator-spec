@@ -56,6 +56,12 @@ paths:
             type: string
           required: true
           description: "URL encoded address, returned by the POST /address endpoint"
+        - in: query
+          name: subtotal
+          schema:
+            type: number
+          required: true
+          description: "estimated subtotal of the restaurant order"
       responses:
         '200':
           description: Success!
