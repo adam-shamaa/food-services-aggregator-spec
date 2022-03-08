@@ -6,11 +6,12 @@
 
     <groupId>org.food-services</groupId>
     <artifactId>api-spec</artifactId>
-    <version>1.7-SNAPSHOT</version>
+    <version>${api-spec-version}-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
+        <api-spec-version>1.7.0</api-spec-version>
     </properties>
 
     <dependencies>
@@ -79,8 +80,9 @@
                             <generatorName>typescript-angular</generatorName>
                             <output>${project.basedir}/target/generated-sources/npm-package</output>
                             <configOptions>
-                                <npmName>food-services-api</npmName>
-                                <npmVersion>0.0.1</npmVersion>
+                                <npmName>@adam-shamaa/food-services-spec</npmName>
+                                <npmVersion>${api-spec-version}</npmVersion>
+                                <npmRepository>https://npm.pkg.github.com</npmRepository>
                                 <snapshot>false</snapshot>
                                 <providedInRoot>true</providedInRoot>
                                 <apiModulePrefix>tms</apiModulePrefix>
