@@ -11,7 +11,7 @@
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <api-spec-version>1.7.2</api-spec-version>
+        <api-spec-version>1.7.3</api-spec-version>
     </properties>
 
     <dependencies>
@@ -85,8 +85,8 @@
                                 <npmRepository>https://npm.pkg.github.com</npmRepository>
                                 <snapshot>false</snapshot>
                                 <providedInRoot>true</providedInRoot>
-                                <apiModulePrefix>tms</apiModulePrefix>
                                 <stringEnums>true</stringEnums>
+                                <withInterfaces>true</withInterfaces>
                             </configOptions>
                         </configuration>
                     </execution>
