@@ -129,8 +129,12 @@ components:
     ServiceProviderRestaurantResponse:
       type: object
       properties:
-        restaurantName:
-          type: string
+        minEstimatedDeliveryTime:
+          type: number
+        maxEstimatedDeliveryTime:
+          type: number
+        rating:
+          type: number
         redirectUrl:
           type: string
         serviceProviderName:
