@@ -99,6 +99,10 @@ components:
           type: string
         averageRating:
           type: number
+        minEstimatedDeliveryTime:
+          type: number
+        maxEstimatedDeliveryTime:
+          type: number
         id:
           $ref: "#/components/schemas/RestaurantId"
 
@@ -109,10 +113,14 @@ components:
           type: string
         imageUrl:
           type: string
-        id:
-          $ref: "#/components/schemas/RestaurantId"
         formattedAddress:
           type: string
+        averageRating:
+          type: number
+        minEstimatedDeliveryTime:
+          type: number
+        maxEstimatedDeliveryTime:
+          type: number
         serviceProviders:
           type: array
           items:
