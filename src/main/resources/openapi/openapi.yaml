@@ -125,6 +125,8 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ServiceProviderRestaurantResponse"
+        cheapestServiceProvider:
+          $ref: "#/components/schemas/ServiceProviderNameEnum"
 
     ServiceProviderRestaurantResponse:
       type: object
