@@ -12,7 +12,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Address"
+              $ref: "#/components/schemas/AddressRequest"
       responses:
         '200':
           description:
@@ -39,7 +39,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/RestaurantPreview"
+                  $ref: "#/components/schemas/SummaryRestaurantResponse"
   /restaurants/{temporaryRestaurantUUID}:
     get:
       summary: Return aggregated restaurant information
@@ -68,11 +68,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RestaurantAggregate"
+                $ref: "#/components/schemas/DetailedRestaurantResponse"
 
 components:
   schemas:
-    Address:
+    AddressRequest:
       type: object
       properties:
         address:
@@ -89,7 +89,8 @@ components:
           type: number
         longitude:
           type: number
-    RestaurantPreviewMetadata:
+
+    SummaryRestaurantResponse:
       type: object
       properties:
         name:
@@ -100,11 +101,8 @@ components:
           type: number
         id:
           $ref: "#/components/schemas/RestaurantId"
-    RestaurantPreview:
-      allOf:
-        - $ref: '#/components/schemas/RestaurantPreviewMetadata'
-        - type: object
-    RestaurantDetailedMetadata:
+
+    DetailedRestaurantResponse:
       type: object
       properties:
         name:
@@ -115,9 +113,12 @@ components:
           $ref: "#/components/schemas/RestaurantId"
         formattedAddress:
           type: string
-    RestaurantId:
-      type: string
-    ServiceProviderMetadata:
+        serviceProviders:
+          type: array
+          items:
+            $ref: "#/components/schemas/ServiceProviderRestaurantResponse"
+
+    ServiceProviderRestaurantResponse:
       type: object
       properties:
         restaurantName:
@@ -125,8 +126,27 @@ components:
         redirectUrl:
           type: string
         serviceProviderName:
-          $ref: "#/components/schemas/ServiceProviderName"
-    MenuItem:
+          $ref: "#/components/schemas/ServiceProviderNameEnum"
+        fees:
+          type: array
+          items:
+            $ref: "#/components/schemas/FeeResponse"
+        menu:
+          type: array
+          items:
+            $ref: "#/components/schemas/MenuCategoryResponse"
+
+    MenuCategoryResponse:
+      type: object
+      properties:
+        name:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/MenuItemResponse"
+
+    MenuItemResponse:
       type: object
       properties:
         name:
@@ -136,72 +156,44 @@ components:
         magnitude:
           type: number
         magnitudeUnit:
-          $ref: "#/components/schemas/CurrencyUnits"
+          $ref: "#/components/schemas/CurrencyUnitsEnum"
         currency:
-          $ref: "#/components/schemas/Currency"
-    MenuCategory:
-      type: object
-      properties:
-        name:
-          type: string
-        items:
-          type: array
-          items:
-            $ref: "#/components/schemas/MenuItem"
-    Fee:
+          $ref: "#/components/schemas/CurrencyEnum"
+
+    FeeResponse:
       type: object
       properties:
         type:
-          $ref: "#/components/schemas/FeeType"
+          $ref: "#/components/schemas/FeeTypeEnum"
         magnitude:
           type: number
         magnitudeUnits:
-          $ref: "#/components/schemas/CurrencyUnits"
+          $ref: "#/components/schemas/CurrencyUnitsEnum"
         currency:
-          $ref: "#/components/schemas/Currency"
+          $ref: "#/components/schemas/CurrencyEnum"
 
-    ServiceProviderRestaurant:
-      allOf:
-        - $ref: "#/components/schemas/ServiceProviderMetadata"
-        - type: object
-          properties:
-            fees:
-              type: array
-              items:
-                $ref: "#/components/schemas/Fee"
-            menu:
-              type: array
-              items:
-                $ref: "#/components/schemas/MenuCategory"
-    RestaurantAggregate:
-      allOf:
-        - $ref: "#/components/schemas/RestaurantDetailedMetadata"
-        - type: object
-          properties:
-            serviceProviders:
-              type: array
-              items:
-                $ref: "#/components/schemas/ServiceProviderRestaurant"
+    RestaurantId:
+      type: string
 
     ############ ENUM DEFINITIONS ############
-    ServiceProviderName:
+    ServiceProviderNameEnum:
       type: string
       enum:
         - SkipTheDishes
         - UberEats
         - Doordash
-    FeeType:
+    FeeTypeEnum:
       type: string
       enum:
         - Delivery
         - Service
         - Small Order
-    Currency:
+    CurrencyEnum:
       type: string
       enum:
         - CAD
         - USD
-    CurrencyUnits:
+    CurrencyUnitsEnum:
       type: string
       enum:
         - Dollars
