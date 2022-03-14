@@ -31,6 +31,11 @@ paths:
             type: string
           required: true
           description: "URL encoded address, returned by the POST /address endpoint"
+        - in: query
+          name: searchQuery
+          schema:
+            type: string
+          required: false
       responses:
         '200':
           description: Success!
@@ -40,6 +45,7 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/SummaryRestaurantResponse"
+
   /restaurants/{temporaryRestaurantUUID}:
     get:
       summary: Return aggregated restaurant information
