@@ -3,16 +3,22 @@ info:
   title: Food Services
   description: Server for the food services aggregator application
   version: 1.0.1
+
+tags:
+  - name: FoodServicesAggregator
+
 paths:
   /address:
     post:
       summary: Set the address that will be used to search for available restaurants
+      tags:
+        - FoodServicesAggregator
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/AddressRequest"
+              $ref: "#/components/schemas/Address"
       responses:
         '200':
           description:
@@ -24,18 +30,11 @@ paths:
   /restaurants:
     get:
       summary: Return available restaurants from supported delivery providers
+      tags:
+        - FoodServicesAggregator
       parameters:
-        - in: cookie
-          name: address
-          schema:
-            type: string
-          required: true
-          description: "URL encoded address, returned by the POST /address endpoint"
-        - in: query
-          name: searchQuery
-          schema:
-            type: string
-          required: false
+        - $ref: "#/components/parameters/AddressCookie"
+        - $ref: "#/components/parameters/SearchQuery"
       responses:
         '200':
           description: Success!
@@ -44,11 +43,13 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/SummaryRestaurantResponse"
+                  $ref: "#/components/schemas/RestaurantSummary"
 
   /restaurants/{temporaryRestaurantUUID}:
     get:
       summary: Return aggregated restaurant information
+      tags:
+        - FoodServicesAggregator
       parameters:
         - in: path
           name: temporaryRestaurantUUID
@@ -56,29 +57,42 @@ paths:
             type: string
           required: true
           description: Temporary restaurant identifier provided in the POST /restaurants response
-        - in: cookie
-          name: address
-          schema:
-            type: string
-          required: true
-          description: "URL encoded address, returned by the POST /address endpoint"
+        - $ref: "#/components/parameters/AddressCookie"
         - in: query
           name: subtotalCents
           schema:
             type: number
           required: true
-          description: "estimated subtotal of the restaurant order"
+          description: "Estimated subtotal of the restaurant order"
       responses:
         '200':
           description: Success!
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DetailedRestaurantResponse"
+                $ref: "#/components/schemas/RestaurantDetails"
 
 components:
+  #### Path / Query Parameters ####
+  parameters:
+    AddressCookie:
+      in: cookie
+      name: address
+      schema:
+        type: string
+      required: true
+      description: URL encoded address, returned by the POST /address endpoint
+    SearchQuery:
+      in: query
+      name: searchQuery
+      schema:
+        type: string
+      required: false
+      description: URL Encoded restaurant name name, cuisine or menu item to search
+
   schemas:
-    AddressRequest:
+    #### Requests ####
+    Address:
       type: object
       properties:
         address:
@@ -96,7 +110,11 @@ components:
         longitude:
           type: number
 
-    SummaryRestaurantResponse:
+    #### Responses ####
+
+
+    #### Response Components ####
+    RestaurantSummary:
       type: object
       properties:
         name:
@@ -112,7 +130,7 @@ components:
         id:
           $ref: "#/components/schemas/RestaurantId"
 
-    DetailedRestaurantResponse:
+    RestaurantDetails:
       type: object
       properties:
         name:
@@ -130,11 +148,11 @@ components:
         serviceProviders:
           type: array
           items:
-            $ref: "#/components/schemas/ServiceProviderRestaurantResponse"
+            $ref: "#/components/schemas/ServiceProviderRestaurant"
         cheapestServiceProvider:
           $ref: "#/components/schemas/ServiceProviderNameEnum"
 
-    ServiceProviderRestaurantResponse:
+    ServiceProviderRestaurant:
       type: object
       properties:
         minEstimatedDeliveryTime:
@@ -150,13 +168,13 @@ components:
         fees:
           type: array
           items:
-            $ref: "#/components/schemas/FeeResponse"
+            $ref: "#/components/schemas/Fee"
         menu:
           type: array
           items:
-            $ref: "#/components/schemas/MenuCategoryResponse"
+            $ref: "#/components/schemas/MenuCategory"
 
-    MenuCategoryResponse:
+    MenuCategory:
       type: object
       properties:
         name:
@@ -164,9 +182,9 @@ components:
         items:
           type: array
           items:
-            $ref: "#/components/schemas/MenuItemResponse"
+            $ref: "#/components/schemas/MenuItem"
 
-    MenuItemResponse:
+    MenuItem:
       type: object
       properties:
         name:
@@ -180,7 +198,7 @@ components:
         currency:
           $ref: "#/components/schemas/CurrencyEnum"
 
-    FeeResponse:
+    Fee:
       type: object
       properties:
         type:
@@ -195,7 +213,7 @@ components:
     RestaurantId:
       type: string
 
-    ############ ENUM DEFINITIONS ############
+    ############ Enums ############
     ServiceProviderNameEnum:
       type: string
       enum:

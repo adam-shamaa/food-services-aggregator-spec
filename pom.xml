@@ -63,6 +63,7 @@
                             <generatorName>spring</generatorName>
                             <apiPackage>com.foodservices.apicodegen</apiPackage>
                             <modelPackage>com.foodservices.apicodegen.model</modelPackage>
+                            <modelNameSuffix>Dto</modelNameSuffix>
                             <configOptions>
                                 <interfaceOnly>true</interfaceOnly>
                             </configOptions>
