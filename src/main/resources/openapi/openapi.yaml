@@ -59,7 +59,7 @@ components:
       name: searchQuery
       schema:
         type: string
-      required: false
+      required: true
       description: URL Encoded restaurant name name, cuisine or menu item to search
     TemporaryRestaurantUUID:
       in: path
