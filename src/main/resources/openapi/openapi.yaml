@@ -14,19 +14,11 @@ paths:
       tags:
         - FoodServicesAggregator
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Address"
+        $ref: '#/components/requestBodies/AddAddressRequest'
       responses:
         '200':
-          description:
-            The address is returned in cookie named `address`. You need to include this cookie in subsequent requests.
-          headers:
-            Set-Cookie:
-              schema:
-                type: string
+          $ref: '#/components/responses/AddAddressResponse'
+
   /restaurants:
     get:
       summary: Return available restaurants from supported delivery providers
@@ -37,13 +29,7 @@ paths:
         - $ref: "#/components/parameters/SearchQuery"
       responses:
         '200':
-          description: Success!
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/RestaurantSummary"
+          $ref: "#/components/responses/RestaurantSummarysResponse"
 
   /restaurants/{temporaryRestaurantUUID}:
     get:
@@ -51,26 +37,12 @@ paths:
       tags:
         - FoodServicesAggregator
       parameters:
-        - in: path
-          name: temporaryRestaurantUUID
-          schema:
-            type: string
-          required: true
-          description: Temporary restaurant identifier provided in the POST /restaurants response
+        - $ref: "#/components/parameters/TemporaryRestaurantUUID"
         - $ref: "#/components/parameters/AddressCookie"
-        - in: query
-          name: subtotalCents
-          schema:
-            type: number
-          required: true
-          description: "Estimated subtotal of the restaurant order"
+        - $ref: "#/components/parameters/SubtotalCents"
       responses:
         '200':
-          description: Success!
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/RestaurantDetails"
+          $ref: "#/components/responses/RestaurantDetailsResponse"
 
 components:
   #### Path / Query Parameters ####
@@ -89,10 +61,75 @@ components:
         type: string
       required: false
       description: URL Encoded restaurant name name, cuisine or menu item to search
+    TemporaryRestaurantUUID:
+      in: path
+      name: temporaryRestaurantUUID
+      schema:
+        type: string
+      required: true
+      description: Restaurant identifier provided by the POST /restaurants response
+    SubtotalCents:
+      in: query
+      name: subtotalCents
+      schema:
+        type: number
+      required: true
+      description: Estimated subtotal of the restaurant order
+
+
+  #### Request Bodies ####
+  requestBodies:
+    AddAddressRequest:
+      description: Add an address associated to a client
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AddressRequest'
+
+  #### Responses ####
+  responses:
+    AddAddressResponse:
+      description: The address is returned in cookie named `address`. You need to include this cookie in subsequent requests.
+      headers:
+        Set-Cookie:
+          schema:
+            type: string
+    RestaurantSummarysResponse:
+      description: List of restaurants that deliver to a client's address
+      content:
+        application/json:
+          schema:
+            title: Restaurant Summarys Response
+            type: object
+            properties:
+              availableRestaurants:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RestaurantSummary"
+    RestaurantDetailsResponse:
+      description: Detailed restaurant information about a restaurant
+      content:
+        application/json:
+          schema:
+            title: Restaurant Details Response
+            type: object
+            properties:
+              restaurantDetails:
+                $ref: "#/components/schemas/RestaurantDetails"
 
   schemas:
     #### Requests ####
+    AddressRequest:
+      title: Address Request
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/Address'
+
+    #### Request Related ####
     Address:
+      title: Address
       type: object
       properties:
         address:
@@ -110,11 +147,9 @@ components:
         longitude:
           type: number
 
-    #### Responses ####
-
-
-    #### Response Components ####
+    #### Response Related ####
     RestaurantSummary:
+      title: Restaurant Summary
       type: object
       properties:
         name:
@@ -131,6 +166,7 @@ components:
           $ref: "#/components/schemas/RestaurantId"
 
     RestaurantDetails:
+      title: Restaurant Details
       type: object
       properties:
         name:
@@ -153,6 +189,7 @@ components:
           $ref: "#/components/schemas/ServiceProviderNameEnum"
 
     ServiceProviderRestaurant:
+      title: Service Provider Restaurant
       type: object
       properties:
         minEstimatedDeliveryTime:
@@ -175,6 +212,7 @@ components:
             $ref: "#/components/schemas/MenuCategory"
 
     MenuCategory:
+      title: Menu Category
       type: object
       properties:
         name:
@@ -185,6 +223,7 @@ components:
             $ref: "#/components/schemas/MenuItem"
 
     MenuItem:
+      title: Menu Item
       type: object
       properties:
         name:
@@ -199,6 +238,7 @@ components:
           $ref: "#/components/schemas/CurrencyEnum"
 
     Fee:
+      title: Fee
       type: object
       properties:
         type:
@@ -211,27 +251,32 @@ components:
           $ref: "#/components/schemas/CurrencyEnum"
 
     RestaurantId:
+      title: Restaurant ID
       type: string
 
     ############ Enums ############
     ServiceProviderNameEnum:
+      title: Service Provider Name
       type: string
       enum:
         - SkipTheDishes
         - UberEats
         - Doordash
     FeeTypeEnum:
+      title: Fee Type
       type: string
       enum:
         - Delivery
         - Service
         - Small Order
     CurrencyEnum:
+      title: Currency
       type: string
       enum:
         - CAD
         - USD
     CurrencyUnitsEnum:
+      title: Currency Units
       type: string
       enum:
         - Dollars
