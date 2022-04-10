@@ -11,7 +11,7 @@
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <api-spec-version>3.0.0</api-spec-version>
+        <api-spec-version>3.0.1</api-spec-version>
     </properties>
 
     <dependencies>
@@ -73,6 +73,8 @@
                                 <providedInRoot>true</providedInRoot>
                                 <stringEnums>true</stringEnums>
                                 <withInterfaces>true</withInterfaces>
+                                <apiModulePrefix>FoodServicesAggregator</apiModulePrefix>
+                                <configurationPrefix>FoodServicesAggregator</configurationPrefix>
                             </configOptions>
                         </configuration>
                     </execution>
