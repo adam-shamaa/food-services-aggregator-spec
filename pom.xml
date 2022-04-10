@@ -11,7 +11,7 @@
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <api-spec-version>2.15.0</api-spec-version>
+        <api-spec-version>3.0.0</api-spec-version>
     </properties>
 
     <dependencies>
@@ -64,6 +64,7 @@
                             <inputSpec>${project.basedir}/src/main/resources/openapi/openapi.yaml</inputSpec>
                             <generatorName>typescript-angular</generatorName>
                             <output>${project.basedir}/target/generated-sources/npm-package</output>
+                            <modelNameSuffix>Dto</modelNameSuffix>
                             <configOptions>
                                 <npmName>@adam-shamaa/food-services-spec</npmName>
                                 <npmVersion>${api-spec-version}</npmVersion>
