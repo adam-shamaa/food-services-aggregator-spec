@@ -39,10 +39,21 @@ paths:
       parameters:
         - $ref: "#/components/parameters/TemporaryRestaurantUUID"
         - $ref: "#/components/parameters/AddressCookie"
-        - $ref: "#/components/parameters/SubtotalCents"
       responses:
         '200':
           $ref: "#/components/responses/RestaurantDetailsResponse"
+  /restaurants/{temporaryRestaurantUUID}/service-providers:
+    get:
+      summary: Return aggregated restaurant information
+      tags:
+        - FoodServicesAggregator
+      parameters:
+        - $ref: "#/components/parameters/TemporaryRestaurantUUID"
+        - $ref: "#/components/parameters/AddressCookie"
+        - $ref: "#/components/parameters/SubtotalCents"
+      responses:
+        '200':
+          $ref: "#/components/responses/RestaurantServiceProvidersResponse"
 
 components:
   #### Path / Query Parameters ####
@@ -117,6 +128,18 @@ components:
             properties:
               restaurantDetails:
                 $ref: "#/components/schemas/RestaurantDetails"
+    RestaurantServiceProvidersResponse:
+      description: Detailed service provider information about a restaurant
+      content:
+        application/json:
+          schema:
+            title: Restaurant Service Providers Response
+            type: object
+            properties:
+              serviceProviders:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RestaurantServiceProvider"
 
   schemas:
     #### Requests ####
@@ -184,12 +207,14 @@ components:
         serviceProviders:
           type: array
           items:
-            $ref: "#/components/schemas/ServiceProviderRestaurant"
-        cheapestServiceProvider:
-          $ref: "#/components/schemas/ServiceProviderNameEnum"
+            $ref: "#/components/schemas/ServiceProviderNameEnum"
+        menu:
+          type: array
+          items:
+            $ref: "#/components/schemas/MenuCategory"
 
-    ServiceProviderRestaurant:
-      title: Service Provider Restaurant
+    RestaurantServiceProvider:
+      title: Restaurant Service Provider
       type: object
       properties:
         minEstimatedDeliveryTime:
@@ -206,10 +231,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Fee"
-        menu:
-          type: array
-          items:
-            $ref: "#/components/schemas/MenuCategory"
 
     MenuCategory:
       title: Menu Category
