@@ -259,6 +259,8 @@ components:
           $ref: "#/components/schemas/CurrencyUnitsEnum"
         currency:
           $ref: "#/components/schemas/CurrencyEnum"
+        imageUrl:
+          type: string
 
     Fee:
       title: Fee
