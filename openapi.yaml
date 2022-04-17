@@ -1,0 +1,308 @@
+openapi: 3.0.0
+info:
+  title: Food Services
+  description: Server for the food services aggregator application
+  version: 1.0.1
+
+tags:
+  - name: FoodServicesAggregator
+
+paths:
+  /address:
+    post:
+      summary: Set the address that will be used to search for available restaurants
+      tags:
+        - FoodServicesAggregator
+      requestBody:
+        $ref: '#/components/requestBodies/AddAddressRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/AddAddressResponse'
+
+  /restaurants:
+    get:
+      summary: Return available restaurants from supported delivery providers
+      tags:
+        - FoodServicesAggregator
+      parameters:
+        - $ref: "#/components/parameters/AddressCookie"
+        - $ref: "#/components/parameters/SearchQuery"
+      responses:
+        '200':
+          $ref: "#/components/responses/RestaurantSummarysResponse"
+
+  /restaurants/{temporaryRestaurantUUID}:
+    get:
+      summary: Return aggregated restaurant information
+      tags:
+        - FoodServicesAggregator
+      parameters:
+        - $ref: "#/components/parameters/TemporaryRestaurantUUID"
+        - $ref: "#/components/parameters/AddressCookie"
+      responses:
+        '200':
+          $ref: "#/components/responses/RestaurantDetailsResponse"
+  /restaurants/{temporaryRestaurantUUID}/service-providers:
+    get:
+      summary: Return aggregated restaurant information
+      tags:
+        - FoodServicesAggregator
+      parameters:
+        - $ref: "#/components/parameters/TemporaryRestaurantUUID"
+        - $ref: "#/components/parameters/AddressCookie"
+        - $ref: "#/components/parameters/SubtotalCents"
+      responses:
+        '200':
+          $ref: "#/components/responses/RestaurantServiceProvidersResponse"
+
+components:
+  #### Path / Query Parameters ####
+  parameters:
+    AddressCookie:
+      in: cookie
+      name: address
+      schema:
+        type: string
+      required: true
+      description: URL encoded address, returned by the POST /address endpoint
+    SearchQuery:
+      in: query
+      name: searchQuery
+      schema:
+        type: string
+      required: true
+      description: URL Encoded restaurant name name, cuisine or menu item to search
+    TemporaryRestaurantUUID:
+      in: path
+      name: temporaryRestaurantUUID
+      schema:
+        type: string
+      required: true
+      description: Restaurant identifier provided by the POST /restaurants response
+    SubtotalCents:
+      in: query
+      name: subtotalCents
+      schema:
+        type: number
+      required: true
+      description: Estimated subtotal of the restaurant order
+
+
+  #### Request Bodies ####
+  requestBodies:
+    AddAddressRequest:
+      description: Add an address associated to a client
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AddressRequest'
+
+  #### Responses ####
+  responses:
+    AddAddressResponse:
+      description: The address is returned in cookie named `address`. You need to include this cookie in subsequent requests.
+      headers:
+        Set-Cookie:
+          schema:
+            type: string
+    RestaurantSummarysResponse:
+      description: List of restaurants that deliver to a client's address
+      content:
+        application/json:
+          schema:
+            title: Restaurant Summarys Response
+            type: object
+            properties:
+              availableRestaurants:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RestaurantSummary"
+    RestaurantDetailsResponse:
+      description: Detailed restaurant information about a restaurant
+      content:
+        application/json:
+          schema:
+            title: Restaurant Details Response
+            type: object
+            properties:
+              restaurantDetails:
+                $ref: "#/components/schemas/RestaurantDetails"
+    RestaurantServiceProvidersResponse:
+      description: Detailed service provider information about a restaurant
+      content:
+        application/json:
+          schema:
+            title: Restaurant Service Providers Response
+            type: object
+            properties:
+              serviceProviders:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RestaurantServiceProvider"
+              cheapestServiceProvider:
+                $ref: '#/components/schemas/ServiceProviderNameEnum'
+
+  schemas:
+    #### Requests ####
+    AddressRequest:
+      title: Address Request
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/Address'
+
+    #### Request Related ####
+    Address:
+      title: Address
+      type: object
+      properties:
+        address:
+          type: string
+        city:
+          type: string
+        province:
+          type: string
+        postalCode:
+          type: string
+        country:
+          type: string
+        latitude:
+          type: number
+        longitude:
+          type: number
+
+    #### Response Related ####
+    RestaurantSummary:
+      title: Restaurant Summary
+      type: object
+      properties:
+        name:
+          type: string
+        imageUrl:
+          type: string
+        averageRating:
+          type: number
+        minEstimatedDeliveryTime:
+          type: number
+        maxEstimatedDeliveryTime:
+          type: number
+        id:
+          $ref: "#/components/schemas/RestaurantId"
+
+    RestaurantDetails:
+      title: Restaurant Details
+      type: object
+      properties:
+        name:
+          type: string
+        imageUrl:
+          type: string
+        formattedAddress:
+          type: string
+        averageRating:
+          type: number
+        minEstimatedDeliveryTime:
+          type: number
+        maxEstimatedDeliveryTime:
+          type: number
+        serviceProviders:
+          type: array
+          items:
+            $ref: "#/components/schemas/ServiceProviderNameEnum"
+        menu:
+          type: array
+          items:
+            $ref: "#/components/schemas/MenuCategory"
+
+    RestaurantServiceProvider:
+      title: Restaurant Service Provider
+      type: object
+      properties:
+        minEstimatedDeliveryTime:
+          type: number
+        maxEstimatedDeliveryTime:
+          type: number
+        rating:
+          type: number
+        redirectUrl:
+          type: string
+        serviceProviderName:
+          $ref: "#/components/schemas/ServiceProviderNameEnum"
+        fees:
+          type: array
+          items:
+            $ref: "#/components/schemas/Fee"
+
+    MenuCategory:
+      title: Menu Category
+      type: object
+      properties:
+        name:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/MenuItem"
+
+    MenuItem:
+      title: Menu Item
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        magnitude:
+          type: number
+        magnitudeUnit:
+          $ref: "#/components/schemas/CurrencyUnitsEnum"
+        currency:
+          $ref: "#/components/schemas/CurrencyEnum"
+        imageUrl:
+          type: string
+
+    Fee:
+      title: Fee
+      type: object
+      properties:
+        type:
+          $ref: "#/components/schemas/FeeTypeEnum"
+        magnitude:
+          type: number
+        magnitudeUnits:
+          $ref: "#/components/schemas/CurrencyUnitsEnum"
+        currency:
+          $ref: "#/components/schemas/CurrencyEnum"
+
+    RestaurantId:
+      title: Restaurant ID
+      type: string
+
+    ############ Enums ############
+    ServiceProviderNameEnum:
+      title: Service Provider Name
+      type: string
+      enum:
+        - SkipTheDishes
+        - UberEats
+        - Doordash
+    FeeTypeEnum:
+      title: Fee Type
+      type: string
+      enum:
+        - Delivery
+        - Service
+        - Small Order
+    CurrencyEnum:
+      title: Currency
+      type: string
+      enum:
+        - CAD
+        - USD
+    CurrencyUnitsEnum:
+      title: Currency Units
+      type: string
+      enum:
+        - Dollars
+        - Cents
