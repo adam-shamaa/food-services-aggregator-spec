@@ -8,6 +8,19 @@ tags:
   - name: FoodServicesAggregator
 
 paths:
+  /ping:
+    get:
+      summary: Use for uptime checks
+      tags:
+        - FoodServicesAggregator
+      responses:
+        '200':
+          description: Static response body used to verify uptime
+          content:
+            application/json:
+              schema:
+                type: string
+
   /address:
     post:
       summary: Set the address that will be used to search for available restaurants
