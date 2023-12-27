@@ -82,12 +82,4 @@
         </plugins>
     </build>
 
-    <distributionManagement>
-        <repository>
-            <id>github</id>
-            <name>GitHub Adam Shamaa Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/adam-shamaa/food-services-aggregator-spec</url>
-        </repository>
-    </distributionManagement>
-
 </project>

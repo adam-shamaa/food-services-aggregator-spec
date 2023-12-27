@@ -12,10 +12,13 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
+      - name: Update working directory to generated java package
+        run: cd ./target/generated-sources/openapi
       - name: Publish package
-        run: mvn --batch-mode deploy
+        run: mvn --batch-mode -DaltDeploymentRepository="$MAVEN_DEPLOYMENT_REPOSITORY_URL" deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEPLOYMENT_REPOSITORY: ${{ secrets.MAVEN_DEPLOYMENT_REPOSITORY_URL}}
   publish-node-package:
     runs-on: ubuntu-latest
     steps:
