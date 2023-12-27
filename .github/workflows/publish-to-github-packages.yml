@@ -6,7 +6,7 @@ env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
 jobs:
-  clear-cache:
+  flush-compiled-artifacts:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -28,15 +28,16 @@ jobs:
           gh actions-cache delete "${{ env.MVN_CACHE_KEY }}" --confirm
 
   build-project-artifacts:
-    needs: [clear-cache]
+    needs: [flush-compiled-artifacts]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
 
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@v4
         with:
           java-version: '11'
           distribution: 'adopt'
+          cache: 'maven'
           
       - name: Build
         run: mvn clean install
@@ -52,6 +53,7 @@ jobs:
         with:
           path: target/generated-sources/npm-package
           key: ${{ env.NPM_CACHE_KEY }}
+    
 
   publish-java-project:
     needs: [build-project-artifacts]
@@ -60,10 +62,11 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@v4
         with:
           java-version: '11'
           distribution: 'adopt'
+          cache: 'maven'
 
       - name: Retrieve compiled maven project artifacts
         uses: actions/cache/restore@v3
