@@ -33,6 +33,11 @@ jobs:
       contents: read
       packages: write
     steps:
+      - uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+          
       - name: Retrieve compiled maven project artifacts
         uses: actions/cache/restore@v3
         with:
