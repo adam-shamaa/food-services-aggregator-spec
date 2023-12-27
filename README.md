@@ -20,3 +20,5 @@ Make changes directly to [src/main/resources/openapi/openapi.yaml](https://githu
 - Auto bump version (a super tedious thing that I forget too often)
 - Add ability to generate swagger ui on local development to act as preview (can simply copy and paste into an online tool but a nice to have)
 - Make use of libraries that merge smaller files into a single generated openapi spec file (easier to digest and maintain a structured director and small files)
+
+
