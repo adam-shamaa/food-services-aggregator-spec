@@ -51,6 +51,8 @@
                             <modelNameSuffix>Dto</modelNameSuffix>
                             <configOptions>
                                 <interfaceOnly>true</interfaceOnly>
+                                <artifactId>api-spec</artifactId>
+                                <groupId>org.food-services</groupId>
                             </configOptions>
                         </configuration>
                     </execution>
