@@ -36,12 +36,14 @@ jobs:
       - name: Retrieve compiled maven project artifacts
         uses: actions/cache/restore@v3
         with:
-          path: ./
+          path: target/generated-sources/openapi
           key: compiled-maven-project
           fail-on-cache-miss: true
 
       - name: Publish package
-        run: mvn --batch-mode -DaltDeploymentRepository="$MAVEN_DEPLOYMENT_REPOSITORY_URL" deploy
+        run: |
+          cd target/generated-sources/openapi
+          mvn --batch-mode -DaltDeploymentRepository="$MAVEN_DEPLOYMENT_REPOSITORY_URL" deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEPLOYMENT_REPOSITORY: ${{ secrets.MAVEN_DEPLOYMENT_REPOSITORY_URL}}
@@ -52,7 +54,7 @@ jobs:
       - name: Retrieve compiled maven project artifacts
         uses: actions/cache/restore@v3
         with:
-          path: ./
+          path: target/generated-sources/npm-package
           key: compiled-npm-project
           fail-on-cache-miss: true
 
@@ -63,7 +65,9 @@ jobs:
           scope: "@adam-shamaa"
 
       - name: Publish NPM Package
-        run: npm publish
+        run: |
+          cd target/generated-sources/npm-package
+          npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   publish-swagger-ui:
