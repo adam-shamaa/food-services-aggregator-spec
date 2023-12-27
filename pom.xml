@@ -53,6 +53,7 @@
                                 <interfaceOnly>true</interfaceOnly>
                                 <artifactId>api-spec</artifactId>
                                 <groupId>org.food-services</groupId>
+                                <snapshotVersion>true</snapshotVersion>
                             </configOptions>
                         </configuration>
                     </execution>
