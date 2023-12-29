@@ -1,5 +1,8 @@
 name: Publish package to GitHub Packages
-on: [push]
+on:
+  push:
+    branches:
+      - main
 env: 
   NPM_CACHE_KEY: "COMPILED_NPM_PROJECT"
   MVN_CACHE_KEY: "COMPILED_MAVEN_PROJECT"
