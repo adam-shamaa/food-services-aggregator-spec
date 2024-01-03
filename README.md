@@ -16,7 +16,7 @@
 - Github Packages
 
 ## Overview
-This repository houses the backend API specs for the food-services-aggregator server.
+This repository houses the backend API specs for the [food-services-aggregator server](https://github.com/adam-shamaa/food-services-backend-V2).
 
 ## Getting Started
 1. Make changes directly to the OpenAPI spec [src/main/resources/openapi/openapi.yaml](https://github.com/adam-shamaa/food-services-aggregator-spec/blob/main/src/main/resources/openapi/openapi.yaml)
