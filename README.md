@@ -12,6 +12,7 @@
     - OpenAPI Generator Maven Plugin
 - Github Actions
 - Github Pages
+- Github Packages
 
 ## Overview
 This repository houses the backend API specs for the food-services-aggregator server.
