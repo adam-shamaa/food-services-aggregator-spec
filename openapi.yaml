@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Food Services
   description: Server for the food services aggregator application
-  version: 3.5.12
+  version: 3.5.13
 
 tags:
   - name: FoodServicesAggregator
