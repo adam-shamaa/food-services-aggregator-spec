@@ -1,4 +1,5 @@
 # food-services-aggregator-spec
+**\*\*As of January 2024, this project will no longer be maintained. Demo videos of the working application are available at the https://github.com/adam-shamaa/food-services-frontend-V2**
 
 ## Table of Contents
 1. [Technologies](#Technologies)
